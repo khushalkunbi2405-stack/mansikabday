@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mansi Birthday 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+:root {
+    --primary: #ff1a1a;
+    --accent: #ff4d4d;
+    --glass: rgba(255, 255, 255, 0.07);
+    
+    /* Muted Status Colors */
+    --color-budget: #ff6666;    
+    --color-purchased: #ffd966; 
+    --color-collected: #66ffb3; 
+    --color-calendar: #80ffbf;  
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+/* Ghost Mode Default State (On Load) */
+body.surprise-mode .ghostable {
+    filter: blur(12px);
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #300000, #120000, #000000);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Additional Professional Styles */
+.rolling { filter: blur(1px); opacity: 0.7; transition: 0.1s; }
+#safetyNet { font-size: 10px; font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+.particles {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+.p {
+    position: absolute;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.12;
+    filter: blur(1px);
+    animation: float 18s infinite linear;
+}
+@keyframes float {
+    0% { transform: translateY(110vh) scale(0.5); }
+    100% { transform: translateY(-15vh) scale(1.2); }
+}
+
+header {
+    text-align: center;
+    padding: 50px 20px 30px;
+}
+
+h1 {
+    font-weight: 900;
+    font-size: 2.2rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 30%, #ff1a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.countdown {
+    margin-top: 10px;
+    font-weight: 300;
+    color: #ff9999;
+    letter-spacing: 2px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px 60px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.card {
+    position: relative;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 30px;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -150%;
+    width: 200%; height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: rotate(45deg);
+    transition: 0.8s;
+}
+.card:hover::after { left: 150%; }
+
+.card:hover, .card:active {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--primary);
+}
+
+.card h2 { font-size: 11px; text-transform: uppercase; opacity: 0.5; letter-spacing: 2px; }
+
+#totalAmount { color: var(--color-budget); font-size: 32px; font-weight: 900; margin: 10px 0 0; }
+#purchasedAmount { color: var(--color-purchased); font-size: 32px; font-weight: 900; margin: 10px 0 0; }
+#progressLabel { color: var(--color-collected); margin-bottom: 5px; }
+
+.ring-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 10px auto 0;
+}
+
+#currentSavingsText { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-calendar); 
+    font-weight: 900; 
+    font-size: 16px;
+}
+
+.progress-ring circle {
+    fill: none;
+    stroke-width: 9;
+    stroke-linecap: round;
+}
+.bg-circle { stroke: rgba(255, 255, 255, 0.05); }
+.progress-circle {
+    stroke: var(--primary);
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    /* Professional Liquid Wobble Transition */
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.daily-target {
+    font-size: 10px;
+    margin-top: 12px;
+    color: var(--color-collected);
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 40px 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid var(--primary);
+    padding-left: 15px;
+}
+
+#giftList {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 15px;
+    max-height: 320px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.gift {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gift-actions { display: flex; align-items: center; gap: 12px; }
+
+input[type="number"] {
+    background: #000;
+    color: #00ff80;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 5px;
+    width: 85px;
+    font-weight: 700;
+}
+
+button.primary-btn {
+    background: linear-gradient(45deg, var(--primary), #800000);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 26, 26, 0.3);
+}
+
+button.ghost-btn {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.calendar-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 25px;
+    padding-bottom: 25px;
+}
+
+.month {
+    min-width: 380px;
+    background: var(--glass);
+    padding: 25px;
+    border-radius: 30px;
+}
+
+.month h3 { text-align: center; color: #ff9999; margin-top: 0; text-transform: uppercase; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+}
+
+.day-header {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.day {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px 5px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 13px;
+    min-height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid transparent;
+}
+
+.today {
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    animation: todayPulse 2s infinite ease-in-out;
+}
+@keyframes todayPulse {
+    0%, 100% { border-color: rgba(255, 255, 255, 0.3); }
+    50% { border-color: rgba(255, 255, 255, 0.8); }
+}
+
+.day input {
+    width: 90%;
+    margin: 5px auto 0;
+    font-size: 11px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #444;
+    color: #00ff80;
+    text-align: center;
+}
+
+.green { background: rgba(0, 255, 128, 0.15) !important; border: 1px solid #00ff80; }
+.red { background: rgba(255, 26, 26, 0.2) !important; border: 1px solid var(--primary); }
+
+#achievement {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+</style>
+</head>
+<body class="surprise-mode"> <div class="particles" id="p-container"></div>
+
+<header>
+    <h1>🎂 Mansi Birthday</h1>
+    <div id="countdown" class="countdown">Initializing...</div>
+    <div style="margin-top: 15px;">
+        <button class="ghost-btn" onclick="exportData()">💾 Backup</button>
+        <button class="ghost-btn" onclick="document.body.classList.toggle('surprise-mode')">👻 Ghost Mode</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="cards">
+        <div class="card">
+            <h2>Total Gift Budget</h2>
+            <p id="totalAmount" class="ghostable">₹0</p>
+        </div>
+        <div class="card">
+            <h2>Already Purchased</h2>
+            <p id="purchasedAmount" class="ghostable">₹0</p>
+        </div>
+        <div class="card">
+            <h2 id="progressLabel" class="ghostable" style="font-size: 11px; text-transform: uppercase; opacity: 1; letter-spacing: 2px;">To Be Collected: ₹0</h2>
+            <div class="ring-container">
+                <span id="currentSavingsText" class="ghostable">₹0</span>
+                <svg width="100" height="100" class="progress-ring">
+                    <circle class="bg-circle" cx="50" cy="50" r="42"/>
+                    <circle class="progress-circle" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264" id="ring"/>
+                </svg>
+            </div>
+            <div id="dailyTarget" class="daily-target ghostable">Target: ₹0/day</div>
+            <div id="safetyNet" class="ghostable"></div>
+        </div>
+    </div>
+
+    <div class="section-title">
+        <span>🎁 GIFT WISHLIST</span>
+        <div>
+            <button class="primary-btn" onclick="addGift()">+ NEW GIFT</button>
+        </div>
+    </div>
+    <div id="giftList" class="ghostable"></div>
+
+    <div class="section-title">📅 SAVINGS CALENDAR</div>
+    <div class="calendar-container" id="calendar"></div>
+</div>
+
+<div id="achievement">
+    <h1 id="milestoneTitle" style="background:none; -webkit-text-fill-color:white; font-size:3.5rem;">GOAL REACHED!</h1>
+    <p id="milestoneMsg" style="letter-spacing:5px;">Mansi's Gifts are Secured!</p>
+    <button class="primary-btn" style="margin-top:20px" onclick="document.getElementById('achievement').style.display='none'">CONTINUE</button>
+</div>
+
+<script>
+const defaultGifts = [{name:"Golden Bracelet",price:2000,bought:true},{name:"Perfume",price:700,bought:false},{name:"Miniso Purse",price:1000,bought:false},{name:"Diary",price:600,bought:false},{name:"Meoww",price:2500,bought:true},{name:"Scrapbook Kit",price:300,bought:false},{name:"Polar Bear",price:1050,bought:true},{name:"Perfume 2 (4 gifts)",price:1400,bought:true},{name:"Jhumka Set",price:1000,bought:false},{name:"Earphones",price:1800,bought:true},{name:"Hello Kitty Uno",price:200,bought:true},{name:"Nail Set",price:1200,bought:false},{name:"Astronaut",price:750,bought:true},{name:"Salty Box",price:1300,bought:false},{name:"Organizer",price:150,bought:false},{name:"Period Massager",price:400,bought:false},{name:"Laneige Lipbalm",price:1500,bought:false},{name:"Camera (Surprise)",price:2800,bought:true},{name:"Kapde",price:1500,bought:false},{name:"Miniso Shopping",price:2000,bought:false},{name:"Letters & Chocolates",price:200,bought:false},{name:"Cheesecake",price:150,bought:false}];
+
+let gifts = JSON.parse(localStorage.getItem('bday_v_ultimate')) || defaultGifts;
+let dailySavings = JSON.parse(localStorage.getItem('bday_daily_savings')) || {};
+let milestones = JSON.parse(localStorage.getItem('bday_milestones')) || [];
+
+// Professional Upgrade: Rolling Animation Variables
+let prevValues = { total: 0, purchased: 0, current: 0 };
+
+function animateValue(id, start, end, duration) {
+    if (start === end) {
+        document.getElementById(id).innerText = "₹" + end.toLocaleString();
+        return;
+    }
+    const obj = document.getElementById(id);
+    obj.classList.add('rolling');
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const currentVal = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = "₹" + currentVal.toLocaleString();
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            obj.classList.remove('rolling');
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
+function triggerSavingsConfetti(amount) {
+    if (!amount || amount <= 0) return;
+    let pCount = 40, scl = 0.8;
+    if (amount >= 500) { pCount = 200; scl = 2.0; } 
+    else if (amount >= 100) { pCount = 100; scl = 1.4; } 
+    confetti({ particleCount: pCount, spread: 80, origin: { y: 0.7 }, scalar: scl, colors: ['#ff1a1a', '#ffd966', '#66ffb3'] });
+}
+
+function update() {
+    let totalBudget = 0, purchased = 0, toBeCollected = 0;
+    gifts.forEach(g => { totalBudget += g.price; if(g.bought) purchased += g.price; else toBeCollected += g.price; });
+    let totalSaved = Object.values(dailySavings).reduce((a, b) => a + (parseInt(b) || 0), 0);
+
+    // Number Roll Animation
+    animateValue("totalAmount", prevValues.total, totalBudget, 1000);
+    animateValue("purchasedAmount", prevValues.purchased, purchased, 1000);
+    animateValue("currentSavingsText", prevValues.current, totalSaved, 1000);
+    prevValues = { total: totalBudget, purchased: purchased, current: totalSaved };
+
+    document.getElementById("progressLabel").innerText = "To Be Collected: ₹" + toBeCollected.toLocaleString();
+
+    let percent = toBeCollected > 0 ? totalSaved / toBeCollected : 1;
+    if(percent > 1) percent = 1; 
+    document.getElementById("ring").style.strokeDashoffset = 264 - (264 * percent);
+    document.getElementById("ring").style.filter = `drop-shadow(0 0 ${8 + (percent*10)}px var(--primary))`;
+
+    const targetDate = new Date("July 24, 2026");
+    const startDate = new Date("March 1, 2026");
+    const today = new Date();
+    
+    const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+    const totalDuration = (targetDate - startDate) / (1000 * 60 * 60 * 24);
+    const daysPassed = (today - startDate) / (1000 * 60 * 60 * 24);
+
+    const dailyTarget = diffDays > 0 ? Math.max(0, (toBeCollected - totalSaved) / diffDays) : 0;
+    document.getElementById("dailyTarget").innerText = `Target: ₹${Math.ceil(dailyTarget)}/day left`;
+
+    // Safety Net Logic
+    const safetyNetEl = document.getElementById("safetyNet");
+    const expectedProgress = (toBeCollected / totalDuration) * daysPassed;
+    
+    if (totalSaved >= toBeCollected && toBeCollected > 0) {
+        safetyNetEl.innerHTML = "<span style='color:#66ffb3'>✓ GOAL SECURED</span>";
+    } else if (totalSaved >= expectedProgress) {
+        safetyNetEl.innerHTML = "<span style='color:#66ffb3'>▲ AHEAD OF SCHEDULE</span>";
+    } else {
+        safetyNetEl.innerHTML = "<span style='color:#ff6666'>▼ BEHIND SCHEDULE</span>";
+    }
+
+    checkMilestones(percent);
+
+    localStorage.setItem('bday_v_ultimate', JSON.stringify(gifts));
+    localStorage.setItem('bday_daily_savings', JSON.stringify(dailySavings));
+}
+
+function checkMilestones(pct) {
+    const trigger = (p, title, msg) => {
+        if (pct >= p && !milestones.includes(p)) {
+            milestones.push(p);
+            localStorage.setItem('bday_milestones', JSON.stringify(milestones));
+            document.getElementById("milestoneTitle").innerText = title;
+            document.getElementById("milestoneMsg").innerText = msg;
+            document.getElementById("achievement").style.display = "flex";
+            confetti({particleCount: 200, spread: 90, origin: {y: 0.6}, scalar: 1.5});
+        }
+    };
+    trigger(0.25, "25% ACHIEVED", "Great start, keep it up!");
+    trigger(0.5, "HALFWAY THERE", "50% of the mission complete!");
+    trigger(0.75, "ALMOST DONE", "75%! You're doing amazing!");
+    trigger(1.0, "GOAL REACHED!", "Mansi's Gifts are Secured!");
+}
+
+function exportData() {
+    const data = JSON.stringify({gifts, dailySavings});
+    const blob = new Blob([data], {type: "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Mansi_Birthday_Backup.json";
+    a.click();
+}
+
+function handleCalendarChange(dayId, val) {
+    const amt = parseInt(val) || 0;
+    dailySavings[dayId] = amt;
+    triggerSavingsConfetti(amt);
+    update();
+}
+
+function renderGifts() {
+    const list = document.getElementById("giftList");
+    list.innerHTML = "";
+    gifts.forEach((g, i) => {
+        const div = document.createElement("div");
+        div.className = "gift";
+        div.innerHTML = `<strong>${g.name}</strong><div class="gift-actions">
+            <input type="number" value="${g.price}" onchange="gifts[${i}].price=parseInt(this.value)||0;update()">
+            <input type="checkbox" ${g.bought?"checked":""} onchange="gifts[${i}].bought=this.checked;if(this.checked)confetti({particleCount:40});update()">
+            <button style="background:none; color:rgba(255,255,255,0.2); font-size:22px; border:none; cursor:pointer;" onclick="gifts.splice(${i},1);renderGifts();update()">✕</button>
+        </div>`;
+        list.appendChild(div);
+    });
+    update();
+}
+
+function addGift() {
+    const n = prompt("Item Name:");
+    const p = parseInt(prompt("Price:"));
+    if(n && p) { gifts.unshift({name: n, price: p, bought: false}); renderGifts(); }
+}
+
+function countdown() {
+    const target = new Date("July 24, 2026 00:00:00").getTime();
+    setInterval(() => {
+        const diff = target - new Date().getTime();
+        const d = Math.floor(diff/(1000*60*60*24));
+        const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+        const m = Math.floor((diff%(1000*60*60))/(1000*60));
+        const s = Math.floor((diff%(1000*60))/1000);
+        document.getElementById("countdown").innerHTML = `⏳ <b>${d}D : ${h}H : ${m}M : ${s}S</b>`;
+    }, 1000);
+}
+
+function generateCalendar() {
+    const today = new Date();
+    const currMonthName = today.toLocaleString('default', { month: 'long' });
+    const currDay = today.getDate();
+    const months = [{n:"March",d:31,s:0}, {n:"April",d:30,s:3}, {n:"May",d:31,s:5}, {n:"June",d:30,s:1}, {n:"July",d:31,s:3}];
+    const container = document.getElementById("calendar");
+    container.innerHTML = "";
+    months.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "month";
+        div.innerHTML = `<h3>${m.n}</h3><div class="grid"></div>`;
+        const grid = div.querySelector(".grid");
+        ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(d => {
+            const h = document.createElement("div"); h.className = "day-header"; h.innerText = d; grid.appendChild(h);
+        });
+        for(let p=0; p<m.s; p++) { grid.appendChild(document.createElement("div")); }
+        for(let i=1; i<=m.d; i++) {
+            const dayId = `${m.n}-${i}`;
+            const day = document.createElement("div");
+            day.className = "day";
+            if(m.n === currMonthName && i === currDay && today.getFullYear() === 2026) day.classList.add("today");
+            let emoji = "";
+            if((m.n!=="July" && i===m.d)||(m.n==="July"&&i===23)) { day.classList.add("green"); emoji="💸"; }
+            if(m.n==="July"&&i===24) { day.classList.add("red"); emoji="🎂"; }
+            day.innerHTML = `<span>${i}</span><span style="font-size:18px">${emoji}</span>
+                <input type="number" placeholder="₹" value="${dailySavings[dayId] || ""}" onchange="handleCalendarChange('${dayId}', this.value)">`;
+            grid.appendChild(day);
+        }
+        container.appendChild(div);
+    });
+}
+
+for(let i=0; i<18; i++) {
+    const p = document.createElement('div'); p.className = 'p'; const sz = Math.random()*25+5+'px';
+    p.style.width = sz; p.style.height = sz; p.style.left = Math.random()*100+'%';
+    p.style.animationDuration = Math.random()*10+10+'s'; p.style.animationDelay = Math.random()*-20+'s';
+    document.getElementById('p-container').appendChild(p);
+}
+
+countdown(); generateCalendar(); renderGifts();
+</script>
+</body>
+</html>
